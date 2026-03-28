@@ -59,10 +59,6 @@ def load_data():
 
 
 def oversample(graphs, label_map, multiplier):
-    """
-    Duplicate graphs that contain at least one semantic relation edge
-    (sitting / holding) so the model sees them more frequently.
-    """
     semantic_ids = {i for i, name in label_map.items() if name in SEMANTIC_RELATIONS}
     result = []
     for g in graphs:
@@ -74,10 +70,6 @@ def oversample(graphs, label_map, multiplier):
 
 
 def to_pyg(graphs, norm_stats):
-    """
-    Convert a list of graph dicts to PyG Data objects,
-    applying z-score normalization using train-split statistics.
-    """
     node_mean = norm_stats["node_mean"].astype(np.float32)
     node_std  = norm_stats["node_std"].astype(np.float32)
     edge_mean = norm_stats["edge_mean"].astype(np.float32)
@@ -102,11 +94,6 @@ def to_pyg(graphs, norm_stats):
 # =========================
 
 class EdgeMLP(nn.Module):
-    """
-    Baseline model — no message passing, no graph structure.
-    For each edge: input = [h_s || h_t || edge_attr] → MLP → class logits.
-    If GNN doesn't clearly beat this, graph structure isn't helping.
-    """
     def __init__(self, node_dim, edge_dim, num_classes, hidden=128, dropout=0.3):
         super().__init__()
         self.net = nn.Sequential(
@@ -126,22 +113,6 @@ class EdgeMLP(nn.Module):
 
 
 class GNNEdgeClassifier(nn.Module):
-    """
-    GNN for edge-level relation classification.
-
-    Step 1 — message passing:
-        GINEConv layers update each node's embedding by aggregating
-        neighbour node features weighted by edge features. This lets
-        the model use scene context (what else is nearby) when deciding
-        what relation a pair of nodes has.
-
-    Step 2 — edge classification head:
-        For each edge (s → t):  MLP([h_s || h_t || edge_attr]) → logits
-
-    GINEConv is chosen over GCN / GAT because it natively incorporates
-    edge features into the message, which matters here since your edge
-    geometry features carry a lot of the relational signal.
-    """
     def __init__(self, node_dim, edge_dim, hidden_dim, num_classes,
                  num_layers=3, dropout=0.3):
         super().__init__()
@@ -222,12 +193,6 @@ def train_epoch(model, loader, optimizer, criterion, device):
 
 @torch.no_grad()
 def evaluate(model, loader, criterion, device, label_map, verbose=False):
-    """
-    Returns (avg_loss, macro_f1).
-    Set verbose=True to print the full per-class classification report.
-    Macro F1 is used for model selection — it weights all classes equally
-    so rare classes (sitting, holding) aren't drowned out by spatial ones.
-    """
     model.eval()
     total_loss  = 0.0
     total_edges = 0
@@ -262,10 +227,6 @@ def evaluate(model, loader, criterion, device, label_map, verbose=False):
 
 def train_model(model, model_name, train_loader, val_loader,
                 criterion, label_map, checkpoint_path=None):
-    """
-    Full training loop with early stopping and LR scheduling.
-    Returns the best model state dict.
-    """
     print(f"\n{'='*55}")
     print(f"  Training: {model_name}")
     print(f"{'='*55}")
