@@ -1,0 +1,38 @@
+*GNN macro F1: 0.878 vs MLP: 0.777 (meaningful gap) GNN uses scene context to make better predictions. Best seen in sitting, holding (semantic classes), and i_left/i_right.
+
+=======================================================
+  FINAL TEST RESULTS
+=======================================================
+              precision    recall  f1-score   support
+
+     sitting       0.88      0.98      0.93     35589
+     holding       0.86      0.96      0.91       987
+        i_on       0.95      0.90      0.93    125800
+      i_left       0.60      0.91      0.72     27767
+     i_right       0.93      0.77      0.84     64268
+     i_above       0.77      0.85      0.81     23822
+     i_below       0.97      0.92      0.94     88610
+  i_touching       0.93      0.97      0.95      5168
+
+    accuracy                           0.89    372011
+   macro avg       0.86      0.91      0.88    372011
+weighted avg       0.90      0.89      0.89    372011
+
+GNN (GINEConv)  →  test_loss=0.2677  test_macro_f1=0.8783
+
+              precision    recall  f1-score   support
+
+     sitting       0.75      0.96      0.84     35589
+     holding       0.68      0.92      0.78       987
+        i_on       0.94      0.88      0.91    125800
+      i_left       0.47      0.83      0.60     27767
+     i_right       0.84      0.53      0.65     64268
+     i_above       0.56      0.76      0.64     23822
+     i_below       0.95      0.85      0.90     88610
+  i_touching       0.87      0.92      0.89      5168
+
+    accuracy                           0.81    372011
+   macro avg       0.76      0.83      0.78    372011
+weighted avg       0.84      0.81      0.81    372011
+
+MLP Baseline  →  test_loss=0.4092  test_macro_f1=0.7767
