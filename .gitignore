@@ -6,3 +6,7 @@ data/
 *.pkl
 *.pt
 *.npy
+vg/data
+vg/processed_data
+vg/vg_images
+vg/visualizations
