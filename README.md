@@ -42,7 +42,7 @@ The dataset for this project is available at the following link:
 * [HoiVerse v1 Dataset](https://myweb.rz.uni-augsburg.de/~phatakmr/hoiverse/v1/)
 
 
-## ⚙️ Installation
+## Installation
 
 1. Clone the repository:
    ```bash
@@ -57,7 +57,7 @@ The dataset for this project is available at the following link:
 
 > **Note:** Make sure your `requirements.txt` includes `torch`, `torch-geometric`, `numpy`, `tqdm`, and `scikit-learn`.
 
-## 🖥️ Usage
+## Usage
 
 ### 1. Preprocess the Data
 
@@ -81,7 +81,7 @@ python test.py
 python test2.py
 ```
 
-## 🧠 Key Methodology: GINEConv
+## Key Methodology: GINEConv
 
 The core of the model is the **Graph Isomorphism Network with Edge features**. It updates node embeddings using the following logic:
 
@@ -89,7 +89,7 @@ $$x_i^{(k)} = \text{MLP}^{(k)} \left( x_i^{(k-1)} + \sum_{j \in \mathcal{N}(i)} 
 
 This allows the "Person" node to aggregate information from the "Bed" node while specifically considering the edge parameters ($e_{j,i}$) like distance and angle.
 
-## 🏠 Smart Home Applications
+## Smart Home Applications
 
 - **Contextual Comfort**: Detects "Sleeping" → Adjusts AC to 74°F.
 - **Media Control**: Detects "Watching TV" → Dims lights and powers on system.
